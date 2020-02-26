@@ -1,8 +1,12 @@
 package main
 import (
-    "src/messager"
-    "routing"
-)
+    "fmt"
+    "net/http"
+    "log"
+    "github.com/jacobhjustice/WeatherAlerts/routing"
+
+);
+
 
 func handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])

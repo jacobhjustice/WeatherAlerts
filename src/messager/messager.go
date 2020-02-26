@@ -1,4 +1,4 @@
-package main
+package routing
 import (
     "fmt"
     "log"

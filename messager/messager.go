@@ -2,31 +2,31 @@ package messager
 import (
     "log"
     "net/smtp"
-    "os"
     "fmt"
+    "github.com/spf13/viper"
 )
 
 
 func Send() {
-    // smtpServer := smtpServer{host: "smtp.gmail.com", port: "587"}
-    // auth := smtp.PlainAuth("", "jhj.program@gmail.com", "testpassword123", "smtp.gmail.com")
     fmt.Println("Starting..")
-    SetEnv()
-    sender := os.Getenv("SENDER_EMAIL")
-    host := os.Getenv("SENDER_HOST")
-    password := os.Getenv("SENDER_PASS")
-    port := os.Getenv("SENDER_PORT")
 
+    sender := viper.GetString("messager.sender.email")
+    host := viper.GetString("messager.sender.host")
+    password := viper.GetString("messager.sender.pass")
+    port := viper.GetString("messager.sender.port")
     auth := smtp.PlainAuth("", sender, password, host)
 
-    // Here we do it all: connect to our server, set up a message and send it
-	to := []string{"test@gmail.com"}
-	msg := []byte("To: test@gmail.com\r\n" +
-		"Subject:Test email\r\n" +
+	to := []string{"test_mail@gmail.com"}
+	msg := []byte("To: test_mail@gmail.com\r\n" +
+		"Subject:What's up??\r\n" +
 		"\r\n" +
-		"Here’s a test email! I love you bug eyes\r\n")
+		"Woah! I sent this from a computer\r\n")
 	err := smtp.SendMail(host + ":" + port, auth, sender, to, msg)
 	if err != nil {
 		log.Fatal(err)
-	}
+    } else {
+        fmt.Println("Sent!")
+    }
+    
+
 }

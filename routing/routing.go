@@ -13,7 +13,7 @@ func Createhandler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Created!")
 }
 
-func main() {
+func Route() {
 	http.HandleFunc("/Test", handler)
 	http.HandleFunc("/Create", Createhandler)
     log.Fatal(http.ListenAndServe(":8080", nil))

@@ -10,3 +10,5 @@ messager:
     port: 587
 weather:
   api_key: "openweatherapi_key"
+data:
+  database: "WeatherAlerts.db"

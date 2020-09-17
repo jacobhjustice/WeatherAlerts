@@ -1,12 +1,12 @@
 package model
 
 import (
-    "../model/enum"
+	"github.com/jacobhjustice/WeatherAlerts/model/enum"
 )
 
 type Notification struct {
-	NotificationId
-	User User
-	Frequency Frequency
-	Alert Alter
+	NotificationId int
+	User           User
+	Frequency      enum.Frequency
+	Alert          enum.Alert
 }

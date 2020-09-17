@@ -1,0 +1,2 @@
+CREATE TABLE User (UserId INT PRIMARY KEY, DisplayName VARCHAR, Email VARCHAR, Zipcode VARCHAR);
+CREATE TABLE Notification (NotificationId INT PRIMARY KEY, UserId INT, Frequency INT, Alert INT, FOREIGN KEY(UserId) REFERENCES User(UserId));

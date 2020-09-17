@@ -1,14 +1,16 @@
 package main
 import (
-    "github.com/jacobhjustice/WeatherAlerts/messager"
-    "github.com/jacobhjustice/WeatherAlerts/routing"
+    // "github.com/jacobhjustice/WeatherAlerts/messager"
+    // "github.com/jacobhjustice/WeatherAlerts/routing"
+    "github.com/jacobhjustice/WeatherAlerts/weather"
     "github.com/spf13/viper"
 );
 
 func main() {
     initializeConfigFile()
-    messager.Send()
-    routing.Route()
+    // messager.Send()
+    // routing.Route()
+    weather.GetWeatherForecast()
 }
 
 func initializeConfigFile() {

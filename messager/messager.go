@@ -9,24 +9,23 @@ import (
 
 func Send() {
     fmt.Println("Starting..")
-
     sender := viper.GetString("messager.sender.email")
     host := viper.GetString("messager.sender.host")
     password := viper.GetString("messager.sender.pass")
     port := viper.GetString("messager.sender.port")
+
     auth := smtp.PlainAuth("", sender, password, host)
 
-	to := []string{"test_mail@gmail.com"}
-	msg := []byte("To: test_mail@gmail.com\r\n" +
+    // Here we do it all: connect to our server, set up a message and send it
+	to := []string{"test@gmail.com"}
+	msg := []byte("To: test@gmail.com\r\n" +
 		"Subject:What's up??\r\n" +
 		"\r\n" +
 		"Woah! I sent this from a computer\r\n")
 	err := smtp.SendMail(host + ":" + port, auth, sender, to, msg)
 	if err != nil {
 		log.Fatal(err)
-    } else {
+	} else {
         fmt.Println("Sent!")
     }
-    
-
 }

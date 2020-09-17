@@ -1,26 +1,22 @@
 package data
-import (
-    "database/sql"
-    "fmt"
-    "strconv"
 
-    _ "github.com/mattn/go-sqlite3"
+import (
+	"database/sql"
+
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/spf13/viper"
 )
 
+func getDatabaseName() string {
+	return viper.GetString("data.database") + ".db"
+}
+
 func read() {
-	fmt.Println("Go MySQL Tutorial")
+	database, _ := sql.Open("sqlite3", getDatabaseName())
+	return database
+}
 
-    // Open up our database connection.
-    // I've set up a database on my local machine using phpmyadmin.
-    // The database is called testDb
-    db, err := sql.Open("mysql", "username:password@tcp(127.0.0.1:3306)/test")
-
-    // if there is an error opening the connection, handle it
-    if err != nil {
-        panic(err.Error())
-    }
-
-    // defer the close till after the main function has finished
-    // executing
-    defer db.Close()
+func initializeDatabase() sql.DB {
+	database, _ := sql.Open("sqlite3", getDatabaseName())
+	return database
 }

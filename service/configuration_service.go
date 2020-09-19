@@ -12,15 +12,15 @@ type IConfigurationService interface {
 
 type ConfigurationService struct {
 	IConfigurationService
-	path      string
-	fileName  string
-	extension string
+	Path      string
+	FileName  string
+	Extension string
 }
 
 func (c ConfigurationService) loadConfigurationFile() error {
-	viper.AddConfigPath(c.path)
-	viper.SetConfigName(c.fileName)
-	viper.SetConfigType(c.extension)
+	viper.AddConfigPath(c.Path)
+	viper.SetConfigName(c.FileName)
+	viper.SetConfigType(c.Extension)
 	err := viper.ReadInConfig()
 	return err
 }

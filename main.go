@@ -1,30 +1,35 @@
 package main
 
 import (
-	// "github.com/jacobhjustice/WeatherAlerts/messager"
-	// "github.com/jacobhjustice/WeatherAlerts/routing"
-	//"github.com/jacobhjustice/WeatherAlerts/weather"
 	"fmt"
 
-	"github.com/jacobhjustice/WeatherAlerts/data"
-	"github.com/spf13/viper"
+	"github.com/jacobhjustice/WeatherAlerts/model/configuration"
+	"github.com/jacobhjustice/WeatherAlerts/service"
 )
 
 func main() {
-	initializeConfigFile()
+	config := initializeConfigFile()
+	dataService := service.DataService{
+		Configuration: config.Data,
+	}
+
+	result := dataService.GetUsers()
+	fmt.Println(result[0])
 	// messager.Send()
 	// routing.Route()
-	result := data.GetUsers()
-	fmt.Println(result[0])
-	//weather.GetWeatherForecast()
+	// result := data.GetUsers()
+	// fmt.Println(result[0])
+	// //weather.GetWeatherForecast()
 }
 
-func initializeConfigFile() {
-	viper.AddConfigPath("..")
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic("Error: Ensure config.yaml exists in project root.")
+func initializeConfigFile() *configuration.Configuration {
+	configService := service.ConfigurationService{
+		Path:      ".",
+		FileName:  "config",
+		Extension: "yaml",
 	}
+
+	config, err := configService.InitializeConfiguration()
+	fmt.Println(err)
+	return config
 }

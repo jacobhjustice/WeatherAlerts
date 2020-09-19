@@ -1,9 +1,11 @@
 package service
 
 import (
-    "log"
-    "net/smtp"
-    "fmt"
+	"fmt"
+	"log"
+	"net/smtp"
+
+	config "github.com/jacobhjustice/WeatherAlerts/model/configuration"
 )
 
 type IEmailService interface {
@@ -12,32 +14,27 @@ type IEmailService interface {
 
 type EmailService struct {
 	IEmailService
-	email string 
-	host string
-	password string
-	port string
-} 
+	Configuration *config.EmailConfiguration
+}
 
 func (e EmailService) getAuth() smtp.Auth {
-	return smtp.PlainAuth("", e.email, e.password, e.host)
+	return smtp.PlainAuth("", e.Configuration.Email, e.Configuration.Password, e.Configuration.Host)
 }
 
 func (e EmailService) getAddress() string {
-	return e.host + ":" + e.port
+	return e.Configuration.Host + ":" + e.Configuration.Port
 }
 
-
 func (e EmailService) SendEmail(message string, toEmail ...string) {
-    fmt.Println("")
-    
-	
+	fmt.Println("")
+
 	auth := e.getAuth()
 	outBytes := []byte(message)
 
-	err := smtp.SendMail(e.host + ":" + e.port, auth, e.email, toEmail, outBytes)
+	err := smtp.SendMail(e.getAddress(), auth, e.Configuration.Email, toEmail, outBytes)
 	if err != nil {
 		log.Fatal(err)
 	} else {
-        fmt.Println("Sent!")
-    }
+		fmt.Println("Sent!")
+	}
 }

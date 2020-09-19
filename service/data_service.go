@@ -6,17 +6,23 @@ import (
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/spf13/viper"
 
+	config "github.com/jacobhjustice/WeatherAlerts/model/configuration"
 	model "github.com/jacobhjustice/WeatherAlerts/model/data"
 )
 
-func getDatabaseName() string {
-	return viper.GetString("data.database")
+type IDataService interface {
+	GetUsers()
 }
 
-func GetUsers() []*model.User {
-	db := initializeDatabase()
+type DataService struct {
+	IDataService
+	Configuration *config.DataConfiguration
+}
+
+func (d *DataService) GetUsers() []*model.User {
+	// TODO: error handle
+	db, _ := d.getDatabaseInstance()
 	row, err := db.Query("SELECT UserId, DisplayName, Email, Zipcode from User")
 	if err != nil {
 		log.Fatal(err)
@@ -41,7 +47,10 @@ func GetUsers() []*model.User {
 	return returnArr
 }
 
-func initializeDatabase() *sql.DB {
-	database, _ := sql.Open("sqlite3", getDatabaseName())
-	return database
+func (d *DataService) getDatabaseInstance() (*sql.DB, error) {
+	database, err := sql.Open("sqlite3", d.Configuration.Database)
+	if err != nil {
+		return nil, err
+	}
+	return database, nil
 }

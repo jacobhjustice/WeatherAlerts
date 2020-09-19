@@ -1,5 +1,4 @@
-// Weather service interacts with Open Weather Map API https://openweathermap.org/api
-package weather
+package service
 
 import (
     "log"
@@ -9,6 +8,7 @@ import (
     "github.com/spf13/viper"
 )
 
+// Weather service interacts with Open Weather Map API https://openweathermap.org/api
 func GetWeatherForecast() {
 	fmt.Println("Retrieving Weather...")
 

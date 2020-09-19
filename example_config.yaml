@@ -2,12 +2,11 @@
 # If using this to scaffold a configuration file for runtime properties, 
 # be sure to change this file's name to "config.yaml" and keep it at the project's root directory.
 
-messager:
-  sender:
-    email: email@gmail.com
-    host: "smtp.gmail.com"
-    pass: "password1!"
-    port: 587
+email:
+  email: email@gmail.com
+  host: "smtp.gmail.com"
+  password: "password1!"
+  port: 587
 weather:
   api_key: "openweatherapi_key"
 data:

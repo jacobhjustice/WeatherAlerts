@@ -1,4 +1,4 @@
-package data
+package service
 
 import (
 	"database/sql"
@@ -8,7 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/viper"
 
-	"github.com/jacobhjustice/WeatherAlerts/model"
+	model "github.com/jacobhjustice/WeatherAlerts/model/data"
 )
 
 func getDatabaseName() string {

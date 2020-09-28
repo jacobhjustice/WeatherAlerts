@@ -16,6 +16,8 @@ type IWeatherService interface {
 type WeatherService struct {
 	IWeatherService
 	Configuration *config.WeatherConfiguration
+
+	log ILogService
 }
 
 // Weather service interacts with Open Weather Map API https://openweathermap.org/api

@@ -27,6 +27,7 @@ func initializeConfigFile() *configuration.Configuration {
 		Path:      ".",
 		FileName:  "config",
 		Extension: "yaml",
+		Log:       &service.LogService{},
 	}
 
 	config, err := configService.InitializeConfiguration()

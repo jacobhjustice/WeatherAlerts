@@ -2,6 +2,7 @@ package service
 
 import (
 	model "github.com/jacobhjustice/WeatherAlerts/model/configuration"
+	"github.com/jacobhjustice/WeatherAlerts/model/enum"
 	"github.com/spf13/viper"
 )
 
@@ -15,9 +16,11 @@ type ConfigurationService struct {
 	Path      string
 	FileName  string
 	Extension string
+	Log       ILogService
 }
 
 func (c ConfigurationService) loadConfigurationFile() error {
+	c.Log.Log("Preparing to load configuration file.", enum.INFO)
 	viper.AddConfigPath(c.Path)
 	viper.SetConfigName(c.FileName)
 	viper.SetConfigType(c.Extension)

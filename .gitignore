@@ -1,3 +1,4 @@
 environment.go
 config.yaml
 *.db
+*.log

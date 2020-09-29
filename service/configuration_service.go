@@ -13,14 +13,35 @@ type IConfigurationService interface {
 
 type ConfigurationService struct {
 	IConfigurationService
-	Path      string
-	FileName  string
-	Extension string
-	Log       ILogService
+	Path       string
+	FileName   string
+	Extension  string
+	LogService ILogService
 }
 
-func (c ConfigurationService) loadConfigurationFile() error {
-	c.Log.Log("Preparing to load configuration file.", enum.INFO)
+// Public
+
+func (c *ConfigurationService) GetCurrentConfiguration() *model.Configuration {
+	return &model.Configuration{
+		Email:   c.loadEmailConfiguration(),
+		Data:    c.loadDataConfiguration(),
+		Weather: c.loadWeatherConfiguration(),
+	}
+}
+
+func (c *ConfigurationService) InitializeConfiguration() (*model.Configuration, error) {
+	err := c.loadConfigurationFile()
+	if err != nil {
+		return nil, err
+	}
+
+	return c.GetCurrentConfiguration(), nil
+}
+
+// Private
+
+func (c *ConfigurationService) loadConfigurationFile() error {
+	c.LogService.Log("Preparing to load configuration file.", enum.INFO)
 	viper.AddConfigPath(c.Path)
 	viper.SetConfigName(c.FileName)
 	viper.SetConfigType(c.Extension)
@@ -28,24 +49,14 @@ func (c ConfigurationService) loadConfigurationFile() error {
 	return err
 }
 
-func (c ConfigurationService) InitializeConfiguration() (*model.Configuration, error) {
-	err := c.loadConfigurationFile()
-	if err != nil {
-		return nil, err
-	}
-
-	return GetCurrentConfiguration(), nil
-}
-
-func GetCurrentConfiguration() *model.Configuration {
-	return &model.Configuration{
-		Email:   loadEmailConfiguration(),
-		Data:    loadDataConfiguration(),
-		Weather: loadWeatherConfiguration(),
+func (c *ConfigurationService) loadDataConfiguration() *model.DataConfiguration {
+	database := viper.GetString("data.database")
+	return &model.DataConfiguration{
+		Database: database,
 	}
 }
 
-func loadEmailConfiguration() *model.EmailConfiguration {
+func (c *ConfigurationService) loadEmailConfiguration() *model.EmailConfiguration {
 	email := viper.GetString("email.email")
 	host := viper.GetString("email.host")
 	password := viper.GetString("email.password")
@@ -59,14 +70,7 @@ func loadEmailConfiguration() *model.EmailConfiguration {
 	}
 }
 
-func loadDataConfiguration() *model.DataConfiguration {
-	database := viper.GetString("data.database")
-	return &model.DataConfiguration{
-		Database: database,
-	}
-}
-
-func loadWeatherConfiguration() *model.WeatherConfiguration {
+func (c *ConfigurationService) loadWeatherConfiguration() *model.WeatherConfiguration {
 	api := viper.GetString("weather.api_key")
 	return &model.WeatherConfiguration{
 		APIKey: api,

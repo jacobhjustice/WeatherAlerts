@@ -17,6 +17,7 @@ type LogService struct {
 }
 
 // Public
+
 func (l *LogService) Log(message string, severity enum.LogSeverity) {
 	file := l.openAndGetFile()
 	fmsg := l.formatMessage(message, severity)
@@ -25,6 +26,7 @@ func (l *LogService) Log(message string, severity enum.LogSeverity) {
 }
 
 // Private
+
 func (l *LogService) closeFile(f *os.File) {
 	f.Close()
 }

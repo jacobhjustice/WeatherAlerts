@@ -12,6 +12,7 @@ import (
 type EmailService struct {
 	specification.IEmailService
 	Configuration *config.EmailConfiguration
+	LogService    *specification.ILogService
 }
 
 func (e *EmailService) getAuth() smtp.Auth {
@@ -22,7 +23,7 @@ func (e *EmailService) getAddress() string {
 	return e.Configuration.Host + ":" + e.Configuration.Port
 }
 
-func (e *EmailService) SendEmail(message string, toEmail ...string) error {
+func (e EmailService) SendEmail(message string, toEmail ...string) error {
 	fmt.Println("")
 
 	auth := e.getAuth()

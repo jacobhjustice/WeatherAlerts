@@ -15,9 +15,10 @@ import (
 type DataService struct {
 	specification.IDataService
 	Configuration *config.DataConfiguration
+	LogService    *specification.ILogService
 }
 
-func (d *DataService) GetUsers() ([]*model.User, error) {
+func (d DataService) GetUsers() ([]*model.User, error) {
 	// TODO: error handle
 	db, _ := d.getDatabaseInstance()
 	row, err := db.Query("SELECT UserId, DisplayName, Email, Zipcode from User")

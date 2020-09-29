@@ -1,3 +1,5 @@
+// Weather service interacts with Open Weather Map API https://openweathermap.org/api
+
 package implementation
 
 import (
@@ -14,11 +16,10 @@ type WeatherService struct {
 	specification.IWeatherService
 	Configuration *config.WeatherConfiguration
 
-	log *specification.ILogService
+	LogService *specification.ILogService
 }
 
-// Weather service interacts with Open Weather Map API https://openweathermap.org/api
-func (w *WeatherService) GetWeatherForecast(zip string) error {
+func (w WeatherService) GetWeatherForecast(zip string) error {
 	fmt.Println("Retrieving Weather...")
 
 	reqStr := fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=%s,%s&appid=%s", zip, "us", w.Configuration.APIKey)

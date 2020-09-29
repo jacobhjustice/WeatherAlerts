@@ -1,11 +1,11 @@
 package processor
 
 import (
-	"github.com/jacobhjustice/WeatherAlerts/service"
+	"github.com/jacobhjustice/WeatherAlerts/service/specification"
 )
 
 type MessageProcessor struct {
-	EmailService   service.EmailService
-	LogService     service.LogService
-	WeatherService service.WeatherService
+	EmailService   *specification.IEmailService
+	LogService     *specification.ILogService
+	WeatherService *specification.IWeatherService
 }

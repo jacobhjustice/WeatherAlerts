@@ -12,12 +12,12 @@ type ConfigurationService struct {
 	Path       string
 	FileName   string
 	Extension  string
-	LogService specification.ILogService
+	LogService *specification.ILogService
 }
 
 // Public
 
-func (c *ConfigurationService) GetCurrentConfiguration() *model.Configuration {
+func (c ConfigurationService) GetCurrentConfiguration() *model.Configuration {
 	return &model.Configuration{
 		Email:   c.loadEmailConfiguration(),
 		Data:    c.loadDataConfiguration(),
@@ -25,7 +25,7 @@ func (c *ConfigurationService) GetCurrentConfiguration() *model.Configuration {
 	}
 }
 
-func (c *ConfigurationService) InitializeConfiguration() (*model.Configuration, error) {
+func (c ConfigurationService) InitializeConfiguration() (*model.Configuration, error) {
 	err := c.loadConfigurationFile()
 	if err != nil {
 		return nil, err
@@ -37,15 +37,15 @@ func (c *ConfigurationService) InitializeConfiguration() (*model.Configuration, 
 // Private
 
 func (c *ConfigurationService) loadConfigurationFile() error {
-	c.LogService.Log("Preparing to load configuration file.", enum.INFO)
+	(*c.LogService).Log("Preparing to load configuration file.", enum.INFO)
 	viper.AddConfigPath(c.Path)
 	viper.SetConfigName(c.FileName)
 	viper.SetConfigType(c.Extension)
 	err := viper.ReadInConfig()
 	if err != nil {
-		c.LogService.Log("Error loading configuration file.", enum.ERROR)
+		(*c.LogService).Log("Error loading configuration file.", enum.ERROR)
 	} else {
-		c.LogService.Log("Sucessfully loaded configuration file.", enum.INFO)
+		(*c.LogService).Log("Sucessfully loaded configuration file.", enum.INFO)
 	}
 	return err
 }

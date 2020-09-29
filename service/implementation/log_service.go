@@ -15,7 +15,7 @@ type LogService struct {
 
 // Public
 
-func (l *LogService) Log(message string, severity enum.LogSeverity) {
+func (l LogService) Log(message string, severity enum.LogSeverity) {
 	file := l.openAndGetFile()
 	fmsg := l.formatMessage(message, severity)
 	file.WriteString(fmsg)

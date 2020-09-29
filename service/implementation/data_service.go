@@ -1,4 +1,4 @@
-package service
+package implementation
 
 import (
 	"database/sql"
@@ -9,24 +9,21 @@ import (
 
 	config "github.com/jacobhjustice/WeatherAlerts/model/configuration"
 	model "github.com/jacobhjustice/WeatherAlerts/model/data"
+	"github.com/jacobhjustice/WeatherAlerts/service/specification"
 )
 
-type IDataService interface {
-	GetUsers()
-}
-
 type DataService struct {
-	IDataService
+	specification.IDataService
 	Configuration *config.DataConfiguration
 }
 
-func (d *DataService) GetUsers() []*model.User {
+func (d *DataService) GetUsers() ([]*model.User, error) {
 	// TODO: error handle
 	db, _ := d.getDatabaseInstance()
 	row, err := db.Query("SELECT UserId, DisplayName, Email, Zipcode from User")
 	if err != nil {
 		log.Fatal(err)
-		return nil
+		return nil, err
 	}
 
 	returnArr := []*model.User{}
@@ -44,7 +41,7 @@ func (d *DataService) GetUsers() []*model.User {
 			Zipcode:     zip,
 		})
 	}
-	return returnArr
+	return returnArr, nil
 }
 
 func (d *DataService) getDatabaseInstance() (*sql.DB, error) {

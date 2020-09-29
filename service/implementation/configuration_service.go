@@ -1,22 +1,18 @@
-package service
+package implementation
 
 import (
 	model "github.com/jacobhjustice/WeatherAlerts/model/configuration"
 	"github.com/jacobhjustice/WeatherAlerts/model/enum"
+	"github.com/jacobhjustice/WeatherAlerts/service/specification"
 	"github.com/spf13/viper"
 )
 
-type IConfigurationService interface {
-	InitializeConfiguration()
-	GetCurrentConfiguration()
-}
-
 type ConfigurationService struct {
-	IConfigurationService
+	specification.IConfigurationService
 	Path       string
 	FileName   string
 	Extension  string
-	LogService ILogService
+	LogService specification.ILogService
 }
 
 // Public
@@ -46,6 +42,11 @@ func (c *ConfigurationService) loadConfigurationFile() error {
 	viper.SetConfigName(c.FileName)
 	viper.SetConfigType(c.Extension)
 	err := viper.ReadInConfig()
+	if err != nil {
+		c.LogService.Log("Error loading configuration file.", enum.ERROR)
+	} else {
+		c.LogService.Log("Sucessfully loaded configuration file.", enum.INFO)
+	}
 	return err
 }
 

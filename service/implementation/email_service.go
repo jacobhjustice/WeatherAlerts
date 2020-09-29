@@ -1,4 +1,4 @@
-package service
+package implementation
 
 import (
 	"fmt"
@@ -6,26 +6,23 @@ import (
 	"net/smtp"
 
 	config "github.com/jacobhjustice/WeatherAlerts/model/configuration"
+	"github.com/jacobhjustice/WeatherAlerts/service/specification"
 )
 
-type IEmailService interface {
-	SendEmail()
-}
-
 type EmailService struct {
-	IEmailService
+	specification.IEmailService
 	Configuration *config.EmailConfiguration
 }
 
-func (e EmailService) getAuth() smtp.Auth {
+func (e *EmailService) getAuth() smtp.Auth {
 	return smtp.PlainAuth("", e.Configuration.Email, e.Configuration.Password, e.Configuration.Host)
 }
 
-func (e EmailService) getAddress() string {
+func (e *EmailService) getAddress() string {
 	return e.Configuration.Host + ":" + e.Configuration.Port
 }
 
-func (e EmailService) SendEmail(message string, toEmail ...string) {
+func (e *EmailService) SendEmail(message string, toEmail ...string) error {
 	fmt.Println("")
 
 	auth := e.getAuth()
@@ -37,4 +34,6 @@ func (e EmailService) SendEmail(message string, toEmail ...string) {
 	} else {
 		fmt.Println("Sent!")
 	}
+
+	return err
 }

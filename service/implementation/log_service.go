@@ -1,4 +1,4 @@
-package service
+package implementation
 
 import (
 	"log"
@@ -6,14 +6,11 @@ import (
 	"time"
 
 	"github.com/jacobhjustice/WeatherAlerts/model/enum"
+	"github.com/jacobhjustice/WeatherAlerts/service/specification"
 )
 
-type ILogService interface {
-	Log(message string, severity enum.LogSeverity)
-}
-
 type LogService struct {
-	ILogService
+	specification.ILogService
 }
 
 // Public

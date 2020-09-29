@@ -1,4 +1,4 @@
-package service
+package implementation
 
 import (
 	"fmt"
@@ -7,21 +7,18 @@ import (
 	"net/http"
 
 	config "github.com/jacobhjustice/WeatherAlerts/model/configuration"
+	"github.com/jacobhjustice/WeatherAlerts/service/specification"
 )
 
-type IWeatherService interface {
-	GetWeatherForecast()
-}
-
 type WeatherService struct {
-	IWeatherService
+	specification.IWeatherService
 	Configuration *config.WeatherConfiguration
 
-	log ILogService
+	log *specification.ILogService
 }
 
 // Weather service interacts with Open Weather Map API https://openweathermap.org/api
-func (w *WeatherService) GetWeatherForecast(zip string) {
+func (w *WeatherService) GetWeatherForecast(zip string) error {
 	fmt.Println("Retrieving Weather...")
 
 	reqStr := fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=%s,%s&appid=%s", zip, "us", w.Configuration.APIKey)
@@ -32,10 +29,12 @@ func (w *WeatherService) GetWeatherForecast(zip string) {
 	if err != nil {
 		fmt.Println("error")
 		log.Fatal(err)
-	} else {
-		defer resp.Body.Close()
-		body, _ := ioutil.ReadAll(resp.Body)
-		fmt.Println(body)
-
+		return err
 	}
+
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(body)
+	return err
+
 }

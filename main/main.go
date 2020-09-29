@@ -22,15 +22,17 @@ func main() {
 	// //weather.GetWeatherForecast()
 }
 
-func initializeConfigFile() *configuration.Configuration {
-	configService := service.ConfigurationService{
+func initializeConfigurationService() *service.ConfigurationService {
+	return service.ConfigurationService{
 		Path:      ".",
 		FileName:  "config",
 		Extension: "yaml",
 		Log:       &service.LogService{},
 	}
 
-	config, err := configService.InitializeConfiguration()
-	fmt.Println(err)
+	
 	return config
+
 }
+
+funcService
